@@ -101,15 +101,16 @@ if __name__ == '__main__':
 
     with open(args.bboxes, 'r') as f:
         bbox_line_list = f.read().splitlines()
+        bbox_line_list = bbox_line_list[1:]
 
     idx = 0
     while idx < len(bbox_line_list):
         line = bbox_line_list[idx]
         line = line.strip('\n')
-        line = line.split(' ')
+        line = line.split(",")
         det_frame_num = int(line[0])
 
-        print(frame_num)
+        print(frame_num, "/", args.n_frames)
 
         # Stop at a certain frame number
         if frame_num > args.n_frames:
@@ -177,11 +178,11 @@ if __name__ == '__main__':
             cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0,255,0), 1)
 
             # Peek next frame detection
-            next_frame_num = int(bbox_line_list[idx+1].strip('\n').split(' ')[0])
+            next_frame_num = int(bbox_line_list[idx+1].strip('\n').split(',')[0])
             # print 'next_frame_num ', next_frame_num
             if next_frame_num == det_frame_num:
                 idx += 1
-                line = bbox_line_list[idx].strip('\n').split(' ')
+                line = bbox_line_list[idx].strip('\n').split(',')
                 det_frame_num = int(line[0])
             else:
                 break
