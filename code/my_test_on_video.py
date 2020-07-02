@@ -30,6 +30,7 @@ def parse_args():
     parser.add_argument('--output_string', dest='output_string', help='String appended to output file')
     parser.add_argument('--n_frames', dest='n_frames', help='Number of frames', type=int)
     parser.add_argument('--fps', dest='fps', help='Frames per second of source video', type=float, default=30.)
+    parser.add_argument(("--out_dir"), dest="outdir", help="Output directory", type=str, required=True)
     args = parser.parse_args()
     return args
 
@@ -42,7 +43,7 @@ if __name__ == '__main__':
     batch_size = 1
     gpu = args.gpu_id
     snapshot_path = args.snapshot
-    out_dir = 'output/video'
+    out_dir = args.outdir
     video_path = args.video_path
 
     if not os.path.exists(out_dir):
@@ -84,7 +85,7 @@ if __name__ == '__main__':
 
     # Define the codec and create VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*'MJPG')
-    out = cv2.VideoWriter('output/video/output-%s.avi' % args.output_string, fourcc, args.fps, (width, height))
+    out = cv2.VideoWriter(out_dir + 'output-%s.avi' % args.output_string, fourcc, args.fps, (width, height))
 
     # # Old cv2
     # width = int(video.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))   # float
@@ -94,7 +95,7 @@ if __name__ == '__main__':
     # fourcc = cv2.cv.CV_FOURCC(*'MJPG')
     # out = cv2.VideoWriter('output/video/output-%s.avi' % args.output_string, fourcc, 30.0, (width, height))
 
-    txt_out = open('output/video/output-%s.txt' % args.output_string, 'w')
+    txt_out = open(out_dir + 'output-%s.txt' % args.output_string, 'w')
 
     frame_num = 1
 
@@ -173,7 +174,7 @@ if __name__ == '__main__':
             # utils.plot_pose_cube(frame, yaw_predicted, pitch_predicted, roll_predicted, (x_min + x_max) / 2, (y_min + y_max) / 2, size = bbox_width)
             utils.draw_axis(frame, yaw_predicted, pitch_predicted, roll_predicted, tdx = (x_min + x_max) / 2, tdy= (y_min + y_max) / 2, size = bbox_height/2)
             # Plot expanded bounding box
-            # cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0,255,0), 1)
+            cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0,255,0), 1)
 
             # Peek next frame detection
             next_frame_num = int(bbox_line_list[idx+1].strip('\n').split(' ')[0])
