@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
     # Define the codec and create VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*'MJPG')
-    out = cv2.VideoWriter(out_dir + 'output-%s.avi' % args.output_string, fourcc, args.fps, (width, height))
+    out = cv2.VideoWriter(out_dir + '%s_hopenet.avi' % args.output_string, fourcc, args.fps, (width, height))
 
     # # Old cv2
     # width = int(video.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))   # float
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     # fourcc = cv2.cv.CV_FOURCC(*'MJPG')
     # out = cv2.VideoWriter('output/video/output-%s.avi' % args.output_string, fourcc, 30.0, (width, height))
 
-    txt_out = open(out_dir + 'output-%s.txt' % args.output_string, 'w')
+    txt_out = open(out_dir + '%s_hopenet.txt' % args.output_string, 'w')
 
     frame_num = 1
 
