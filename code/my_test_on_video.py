@@ -110,7 +110,7 @@ if __name__ == '__main__':
         line = line.split(",")
         det_frame_num = int(line[0])
 
-        print(frame_num, "/", args.n_frames)
+        print(frame_num, "/", args.n_frames, args.output_string)
 
         # Stop at a certain frame number
         if frame_num > args.n_frames:
