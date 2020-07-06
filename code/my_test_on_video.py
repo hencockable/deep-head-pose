@@ -96,12 +96,12 @@ if __name__ == '__main__':
     # out = cv2.VideoWriter('output/video/output-%s.avi' % args.output_string, fourcc, 30.0, (width, height))
 
     txt_out = open(out_dir + '%s_hopenet.txt' % args.output_string, 'w')
-
-    frame_num = 1
+    txt_out.write("frame yaw pitch roll bbox x_min y_min x_max y_max\n")
+    frame_num = 0   # hendrik
 
     with open(args.bboxes, 'r') as f:
         bbox_line_list = f.read().splitlines()
-        bbox_line_list = bbox_line_list[1:]
+        bbox_line_list = bbox_line_list[1:]     # remove header
 
     idx = 0
     while idx < len(bbox_line_list):
@@ -110,11 +110,11 @@ if __name__ == '__main__':
         line = line.split(",")
         det_frame_num = int(line[0])
 
-        print(frame_num, "/", args.n_frames, args.output_string)
-
         # Stop at a certain frame number
         if frame_num > args.n_frames:
             break
+
+        print(frame_num, "/", args.n_frames, args.output_string)
 
         # Save all frames as they are if they don't have bbox annotation.
         while frame_num < det_frame_num:
@@ -124,7 +124,7 @@ if __name__ == '__main__':
                 video.release()
                 txt_out.close()
                 sys.exit(0)
-            # out.write(frame)
+            out.write(frame)
             frame_num += 1
 
         # Start processing frame with bounding box
@@ -132,6 +132,8 @@ if __name__ == '__main__':
         if ret == False:
             break
         cv2_frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+
+        bbox_in_frame = 0
 
         while True:
             x_min, y_min, x_max, y_max = int(float(line[1])), int(float(line[2])), int(float(line[3])), int(float(line[4]))
@@ -171,7 +173,7 @@ if __name__ == '__main__':
             roll_predicted = torch.sum(roll_predicted.data[0] * idx_tensor) * 3 - 99
 
             # Print new frame with cube and axis
-            txt_out.write(str(frame_num) + ' %f %f %f\n' % (yaw_predicted, pitch_predicted, roll_predicted))
+            txt_out.write(str(frame_num) + ' %f %f %f %s %s %s %s %s\n' % (yaw_predicted, pitch_predicted, roll_predicted, bbox_in_frame, x_min, y_min, x_max, y_max))
             # utils.plot_pose_cube(frame, yaw_predicted, pitch_predicted, roll_predicted, (x_min + x_max) / 2, (y_min + y_max) / 2, size = bbox_width)
             utils.draw_axis(frame, yaw_predicted, pitch_predicted, roll_predicted, tdx = (x_min + x_max) / 2, tdy= (y_min + y_max) / 2, size = bbox_height/2)
             # Plot expanded bounding box
@@ -182,6 +184,7 @@ if __name__ == '__main__':
             # print 'next_frame_num ', next_frame_num
             if next_frame_num == det_frame_num:
                 idx += 1
+                bbox_in_frame += 1
                 line = bbox_line_list[idx].strip('\n').split(',')
                 det_frame_num = int(line[0])
             else:
