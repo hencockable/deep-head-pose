@@ -14,20 +14,29 @@ def get_features_and_labels(annotations):
 
 
 def show_label_dist(annotations):
-    sb.distplot(annotations["label"], kde=False)
+    sb.distplot(annotations["label"], kde=False, bins=10)
+    plt.ylabel("n(label)")
+    plt.xlabel("Labels")
     plt.show()
 
 
-def uniform_distribution(annotations):
+def uniform_distribution(annotations, n=None):
+    # get unique labels
     labels = annotations.label.unique()
+
     label_dict = {}
     sizes = []
 
     for label in labels:
+        # group samples by label
         label_dict[label] = annotations.loc[annotations["label"] == label]
         sizes.append(len(label_dict[label]))
 
-    minimum = min(sizes)
+    if n is None:
+        minimum = min(sizes)
+    else:
+        minimum = n
+
     data = []
 
     for label in labels:
