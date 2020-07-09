@@ -27,9 +27,9 @@ cudnn.enabled = True
 
 batch_size = 1
 gpu = 0
-snapshot_path = '../../source/hopenet_robust_alpha1.pkl'
-out_dir = 'output/video'
-video_path = "../../data/testvid_small.mp4"
+snapshot_path = '../../../source/hopenet_robust_alpha1.pkl'
+out_dir = '../output/video'
+video_path = "../../../data/testvid_small.mp4"
 face_model = "../../source/mmod_human_face_detector.dat"
 output_string = "hopenet_dlib"
 fps = 1

@@ -74,7 +74,7 @@ with open(meta, 'r') as f:
     meta_line_list = f.read().splitlines()
     meta_line_list = meta_line_list[1:]  # remove header
 
-txt_out = open("../source/annotations_0925_G12_Chemistry_cut_VP2.txt", "w")
+txt_out = open("../../source/annotations_0925_G12_Chemistry_cut_VP2.txt", "w")
 previous = ""
 
 idx = 0
