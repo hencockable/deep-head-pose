@@ -93,8 +93,9 @@ def train_and_test_different_data(clf, X1, y1, X2, y2, k_cross_val, test_size):
     roc_aucs = []
 
     for i in range(k_cross_val):
+        print("K = {}".format(i))
         # clone classifier to get settings but discard previous trainings
-        clf = clone(clf)
+        copy = clone(clf)
 
         # create train and test sets (1 used for training, 2 used for testing)
         X1_train, X1_test, y1_train, y1_test = train_test_split(X1, y1, test_size=test_size, random_state=i,
@@ -108,14 +109,14 @@ def train_and_test_different_data(clf, X1, y1, X2, y2, k_cross_val, test_size):
         y_test_bin = label_binarize(y2_test, classes=[0, 1, 2, 3])
 
         # train classifier
-        clf.fit(X_train, y_train)
+        copy.fit(X_train, y_train)
 
         # get test predictions
-        preds = clf.predict(X_test)
+        preds = copy.predict(X_test)
 
         # get certainties/probabilities per label per prediction
         try:
-            probs = clf.predict_proba(X_test)
+            probs = copy.predict_proba(X_test)
         except AttributeError:
             probs = label_binarize(preds, classes=[0, 1, 2, 3])
 
@@ -148,8 +149,9 @@ def train_and_test_same_data(clf, X, y, k_cross_val, test_size=0.33):
     roc_aucs = []
 
     for i in range(k_cross_val):
+        print("K = {}".format(i))
         # clone classifier to get settings but discard previous trainings
-        clf = clone(clf)
+        copy = clone(clf)
 
         # create train and test sets
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=i, shuffle=True, stratify=y)
@@ -158,14 +160,14 @@ def train_and_test_same_data(clf, X, y, k_cross_val, test_size=0.33):
         y_test_bin = label_binarize(y_test, classes=[0, 1, 2, 3])
 
         # train classifier
-        clf.fit(X_train, y_train)
+        copy.fit(X_train, y_train)
 
         # get test predictions
-        preds = clf.predict(X_test)
+        preds = copy.predict(X_test)
 
         # get certainties/probabilities per label per prediction
         try:
-            probs = clf.predict_proba(X_test)
+            probs = copy.predict_proba(X_test)
         except AttributeError:
             probs = label_binarize(preds, classes=[0, 1, 2, 3])
 

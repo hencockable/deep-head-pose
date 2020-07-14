@@ -6,11 +6,11 @@ from sklearn.linear_model import LogisticRegression
 import numpy as np
 
 if __name__ == '__main__':
-    PATH_TO_ANNOTATIONS = "../../source/annotations_0925_G12_Chemistry_cut_VP3.txt"
-    N_SAMPLES_PL = 15      # samples per label
+    PATH_TO_ANNOTATIONS = "~/PycharmProjects/Master/Hopenet/source/annotations_0925_G12_Chemistry_cut_VP2.txt"
+    N_SAMPLES_PL = 10      # samples per label
     K_CROSS_VAL = 10    # number of train/test per subset of the entire data
-    RUNS = 50           # number of runs of cross val with different data subsets
-    TEST_SIZE = 0.33   # percentage of data set to use for testing
+    RUNS = 10           # number of runs of cross val with different data subsets
+    TEST_SIZE = 0.2   # percentage of data set to use for testing
 
     # initialize classifiers
     classifiers = [RandomForestClassifier(),
