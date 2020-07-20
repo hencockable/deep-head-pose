@@ -14,8 +14,7 @@ import torchvision
 import torch.nn.functional as F
 from PIL import Image
 
-import datasets, hopenet, utils
-
+import hopenet, utils
 
 # Argument parser
 def parse_args():
