@@ -87,7 +87,7 @@ if __name__ == '__main__':
     out = cv2.VideoWriter(out_dir + '%s_hopenet.avi' % args.output_string, fourcc, args.fps, (width, height))
 
     txt_out = open(out_dir + '%s_head_poses.csv' % args.output_string, 'w')
-    txt_out.write("frame_num,face_id,total_detected_faces,x_min,y_min,x_max,y_max,score,x1,y1,x2,y2,x3,y3,x4,y4,x5,y5"
+    txt_out.write("frame_num,face_id,total_detected_faces,x_min,y_min,x_max,y_max,score,x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,"
                   "yaw,pitch,roll\n")
     frame_num = 0   # hendrik
 
