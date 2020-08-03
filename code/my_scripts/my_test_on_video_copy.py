@@ -13,7 +13,6 @@ import torch.backends.cudnn as cudnn
 import torchvision
 import torch.nn.functional as F
 from PIL import Image
-import pandas as pd
 
 import hopenet, utils
 
@@ -96,14 +95,12 @@ if __name__ == '__main__':
     # out = cv2.VideoWriter('output/video/output-%s.avi' % args.output_string, fourcc, 30.0, (width, height))
 
     txt_out = open(out_dir + '%s_hopenet.txt' % args.output_string, 'w')
-    txt_out.write("frame,yaw,pitch,roll,bbox,x_min,y_min,x_max,y_max\n")
+    txt_out.write("frame yaw pitch roll bbox x_min y_min x_max y_max\n")
     frame_num = 0   # hendrik
 
     with open(args.bboxes, 'r') as f:
         bbox_line_list = f.read().splitlines()
         bbox_line_list = bbox_line_list[1:]     # remove header
-
-    bbox_line_df = pd.read_csv(args.bboxes)
 
     idx = 0
     while idx < len(bbox_line_list):
