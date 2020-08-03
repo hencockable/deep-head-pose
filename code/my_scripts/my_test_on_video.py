@@ -161,7 +161,7 @@ if __name__ == '__main__':
             roll_predicted = torch.sum(roll_predicted.data[0] * idx_tensor) * 3 - 99
 
             # Print new frame with cube and axis
-            txt_out.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}".format(
+            txt_out.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
                 frame_num, line.face_id, line.total_detected_faces, x_min, y_min, x_max, y_max, line.score,
                 line.x1, line.y1, line.x2, line.y2, line.x3, line.y3, line.x4, line.y4, line.x5, line.y5, yaw_predicted,
                 pitch_predicted, roll_predicted
