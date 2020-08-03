@@ -28,7 +28,6 @@ def parse_args():
     parser.add_argument('--video', dest='video_path', help='Path of video')
     parser.add_argument('--bboxes', dest='bboxes', help='Bounding box annotations of frames')
     parser.add_argument('--output_string', dest='output_string', help='String appended to output file')
-    parser.add_argument('--n_frames', dest='n_frames', help='Number of frames', type=int)
     parser.add_argument('--fps', dest='fps', help='Frames per second of source video', type=float, default=30.)
     parser.add_argument(("--out_dir"), dest="outdir", help="Output directory", type=str, required=True)
     args = parser.parse_args()
@@ -102,10 +101,6 @@ if __name__ == '__main__':
     while idx < len(bbox_line_df.shape[0]):
         line = bbox_line_df.iloc[idx]
         det_frame_num = int(line.frame_num)
-
-        # Stop at a certain frame number
-        if frame_num > args.n_frames:
-            break
 
         print(frame_num, "/", args.n_frames, args.output_string)
 
