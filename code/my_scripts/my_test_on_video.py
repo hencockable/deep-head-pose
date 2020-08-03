@@ -132,6 +132,7 @@ if __name__ == '__main__':
         # Start processing frame with bounding box
         ret,frame = video.read()
         if ret == False:
+            print("Couldnt read next frame.")
             break
         cv2_frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
 
