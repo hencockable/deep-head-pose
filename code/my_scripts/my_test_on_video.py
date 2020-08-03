@@ -102,7 +102,7 @@ if __name__ == '__main__':
         line = bbox_line_df.iloc[idx]
         det_frame_num = int(line.frame_num)
 
-        print(idx, "\\", bbox_line_df.shape[0], args.output_string)
+        print("{} \\ {} - {} -> {:.2f}".format(idx, bbox_line_df.shape[0], args.output_string, idx/bbox_line_df.shape[0]))
 
         # Save all frames as they are if they don't have bbox annotation.
         while frame_num < det_frame_num:
