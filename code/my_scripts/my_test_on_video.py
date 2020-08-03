@@ -98,7 +98,7 @@ if __name__ == '__main__':
     bbox_line_df = pd.read_csv(args.bboxes)
 
     idx = 0
-    while idx < len(bbox_line_df.shape[0]):
+    while idx < bbox_line_df.shape[0]:
         line = bbox_line_df.iloc[idx]
         det_frame_num = int(line.frame_num)
 
