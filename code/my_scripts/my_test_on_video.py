@@ -102,7 +102,7 @@ if __name__ == '__main__':
         line = bbox_line_df.iloc[idx]
         det_frame_num = int(line.frame_num)
 
-        print(frame_num, args.output_string)
+        print(idx, "\\", bbox_line_df.shape[0], args.output_string)
 
         # Save all frames as they are if they don't have bbox annotation.
         while frame_num < det_frame_num:
@@ -173,7 +173,11 @@ if __name__ == '__main__':
             cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0,255,0), 1)
 
             # Peek next frame detection
-            next_frame_num = int(bbox_line_df.iloc[idx+1].frame_num)
+            try:
+                next_frame_num = int(bbox_line_df.iloc[idx+1].frame_num)
+            except Exception:
+                print("Reached end of file.")
+                next_frame_num = -1
             # print 'next_frame_num ', next_frame_num
             if next_frame_num == det_frame_num:
                 idx += 1
