@@ -9,6 +9,7 @@ from random import shuffle
 import matplotlib.pyplot as plt
 import seaborn as sb
 import os
+import joblib
 
 sb.set(style="whitegrid")
 
@@ -51,7 +52,7 @@ def sub_sample(X_train, y_train, sub_sample_size):
     return X_train_sub, y_train_sub
 
 
-PATH_TO_ANNOTATIONS = "/home/hendrik/PycharmProjects/Master/Hopenet/source/annotations_0927_G08_French_cut/"
+PATH_TO_ANNOTATIONS = "/home/hendrik/PycharmProjects/Master/Hopenet/source/annotations_0927_G08_French_cut/perSecond/"
 RUNS = 10  # number of runs of cross val with different data subsets
 TEST_SIZE = 0.2  # percentage of data set to use for testing
 LABELS = [0, 1, 2]
@@ -60,25 +61,33 @@ sub_samples_per_label = ["all", 17, 15, 10, 5]
 for file in os.listdir(PATH_TO_ANNOTATIONS):
     print("Current annotations to process: {}".format(file))
     SAVE_PATH_PLOTS = "../output/plots/" + file + "_joined_l2l3/"
-    SAVE_PATH_CLF = "../output/plots/" + file + "_joined_l2l3/"
+    SAVE_PATH_CLF = "../output/clfs/" + file + "_joined_l2l3/"
 
-    # check if save dir exists, else create it
+    # check if save dir plots exists, else create it
     if not os.path.exists(SAVE_PATH_PLOTS):
         os.makedirs(SAVE_PATH_PLOTS)
         print("Created dir: {}".format(SAVE_PATH_PLOTS))
     else:
         print("Directory already exists: {}".format(SAVE_PATH_PLOTS))
 
+    # check if save dir clf exists, else create it
+    if not os.path.exists(SAVE_PATH_CLF):
+        os.makedirs(SAVE_PATH_CLF)
+        print("Created dir: {}".format(SAVE_PATH_CLF))
+    else:
+        print("Directory already exists: {}".format(SAVE_PATH_CLF))
+
     # create test and train set
     # read annotations
-    annotations = pd.read_csv(PATH_TO_ANNOTATIONS + file, delimiter=" ")
+    annotations = pd.read_csv(PATH_TO_ANNOTATIONS + file)
 
     # exclude label 4 if present (other) since its not relevant for synchrony
     annotations = annotations[annotations.label != 4]
 
     # split annotations into features and labels (X, y)
     X = annotations[["yaw", "pitch", "roll"]].values.tolist()
-    y = annotations["label"].values.tolist()
+    y = annotations["label"].astype("int32").values.tolist()
+
 
     # Pool labels 2 and 3 because of little sample size
     y = [2 if i == 3 else i for i in y]
@@ -101,9 +110,7 @@ for file in os.listdir(PATH_TO_ANNOTATIONS):
 
 
     # initialize classifiers
-    classifiers = [RandomForestClassifier(),
-                   SVC(kernel="rbf"),
-                   LogisticRegression(dual=False, max_iter=2000, multi_class="multinomial")]
+    classifiers = [SVC(kernel="rbf")]
 
     for clf in classifiers:
         # get name
@@ -132,6 +139,10 @@ for file in os.listdir(PATH_TO_ANNOTATIONS):
 
                 # train classifier
                 copy.fit(X_train_sub, y_train_sub)
+
+                # save first classifier
+                if run == 0:
+                    joblib.dump(copy, "{}{}_{}.sav".format(SAVE_PATH_CLF, name, sub_sample_size))
 
                 # get test predictions
                 preds = copy.predict(X_test)
