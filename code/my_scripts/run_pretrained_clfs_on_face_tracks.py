@@ -27,7 +27,7 @@ def collapse_list(lst):
 vps = ["3", "8", "11", "12", "14", "18"]
 
 file = "0927_G08_French_cut"
-clfs_path = "../output/clfs/annotations_{}_VP{}_1sec_skip10secs.csv_joined_l2l3/"
+clfs_path = "../output/clfs/annotations_{}_VP{}_1sec_skip9secs.csv_joined_l2l3/"
 face_track_path = "/home/hendrik/PycharmProjects/Master/Hopenet/source/face_tracks/face_track_{}_VP{}_filled.csv"
 face_detection_df = pd.read_csv("/home/hendrik/PycharmProjects/Master/Hopenet/source/face_detection/{}.csv".format(file))
 total_frames = face_detection_df.frame_num.max() + 1
