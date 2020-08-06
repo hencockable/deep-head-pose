@@ -107,8 +107,9 @@ if __name__ == '__main__':
         # Save all frames as they are if they don't have bbox annotation.
         while frame_num < det_frame_num:
             ret, frame = video.read()
+
+            print("skip")
             if ret == False:
-                print("skip")
                 out.release()
                 video.release()
                 txt_out.close()
