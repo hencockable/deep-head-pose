@@ -77,6 +77,8 @@ if __name__ == '__main__':
     idx_tensor = torch.FloatTensor(idx_tensor).cuda(gpu)
 
     video = cv2.VideoCapture(video_path)
+    if (video.isOpened() == False):
+        print("Error opening video stream or file")
 
     # New cv2
     width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))  # float
@@ -117,9 +119,6 @@ if __name__ == '__main__':
 
         # Start processing frame with bounding box
         ret,frame = video.read()
-        print(width, height)
-        print(frame)
-        print(ret)
         if ret == False:
             print("Couldnt read next frame.")
             break
