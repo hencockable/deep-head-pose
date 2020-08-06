@@ -110,6 +110,7 @@ if __name__ == '__main__':
         while frame_num < det_frame_num:
             ret, frame = video.read()
             if ret == False:
+                print("skip")
                 out.release()
                 video.release()
                 txt_out.close()
