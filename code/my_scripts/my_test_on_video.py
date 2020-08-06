@@ -77,7 +77,6 @@ if __name__ == '__main__':
     idx_tensor = torch.FloatTensor(idx_tensor).cuda(gpu)
 
     video = cv2.VideoCapture(video_path)
-    print(video.isOpened())
 
     # New cv2
     width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))  # float
