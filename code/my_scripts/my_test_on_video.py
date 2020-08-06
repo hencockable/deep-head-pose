@@ -107,8 +107,6 @@ if __name__ == '__main__':
         # Save all frames as they are if they don't have bbox annotation.
         while frame_num < det_frame_num:
             ret, frame = video.read()
-
-            print("skip")
             if ret == False:
                 out.release()
                 video.release()
@@ -119,6 +117,9 @@ if __name__ == '__main__':
 
         # Start processing frame with bounding box
         ret,frame = video.read()
+        print(width, height)
+        print(frame)
+        print(ret)
         if ret == False:
             print("Couldnt read next frame.")
             break
