@@ -44,8 +44,6 @@ if __name__ == '__main__':
     snapshot_path = args.snapshot
     out_dir = args.outdir
     video_path = args.video_path
-    print(video_path)
-    exit(123)
 
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
