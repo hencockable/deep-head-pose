@@ -15,7 +15,7 @@ import torch.nn.functional as F
 from PIL import Image
 import pandas as pd
 
-import hopenet, utils
+import my_hopenet, utils
 
 # Argument parser
 def parse_args():
@@ -52,7 +52,7 @@ if __name__ == '__main__':
         sys.exit('Video does not exist')
 
     # ResNet50 structure
-    model = hopenet.Hopenet(torchvision.models.resnet.Bottleneck, [3, 4, 6, 3], 66)
+    model = my_hopenet.Hopenet(torchvision.models.resnet.Bottleneck, [3, 4, 6, 3], 66)
 
     print('Loading snapshot.')
     # Load snapshot

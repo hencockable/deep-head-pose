@@ -63,6 +63,9 @@ class Hopenet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
 
+        l4_out = x.view(x.size(0), -1)
+        print(l4_out)
+
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         pre_yaw = self.fc_yaw(x)
