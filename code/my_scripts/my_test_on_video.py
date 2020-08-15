@@ -89,6 +89,9 @@ if __name__ == '__main__':
     txt_out = open(out_dir + '%s_head_poses.csv' % args.output_string, 'w')
     txt_out.write("frame_num,face_id,total_detected_faces,x_min,y_min,x_max,y_max,score,x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,"
                   "yaw,pitch,roll,l4\n")
+    l4_out = open("{}{}_l4_data.csv".format(out_dir, args.output_string), "w")
+    l4_out.write("l4")
+
     frame_num = 0   # hendrik
 
     # with open(args.bboxes, 'r') as f:
@@ -150,7 +153,6 @@ if __name__ == '__main__':
             img = Variable(img).cuda(gpu)
 
             yaw, pitch, roll, l4 = model(img)
-            print(l4[:5])
 
             yaw_predicted = F.softmax(yaw)
             pitch_predicted = F.softmax(pitch)
@@ -162,11 +164,12 @@ if __name__ == '__main__':
             roll_predicted = torch.sum(roll_predicted.data[0] * idx_tensor) * 3 - 99
 
             # Print new frame with cube and axis
-            txt_out.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
+            txt_out.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
                 frame_num, line.face_id, line.total_detected_faces, x_min, y_min, x_max, y_max, line.score,
                 line.x1, line.y1, line.x2, line.y2, line.x3, line.y3, line.x4, line.y4, line.x5, line.y5, yaw_predicted,
-                pitch_predicted, roll_predicted, l4
+                pitch_predicted, roll_predicted
             ))
+            l4_out.write("{}\n".format(str(l4)[1:-1]))
             # txt_out.write(str(frame_num) + ' %f %f %f %s %s %s %s %s\n' % (yaw_predicted, pitch_predicted, roll_predicted, bbox_in_frame, x_min, y_min, x_max, y_max))
             # utils.plot_pose_cube(frame, yaw_predicted, pitch_predicted, roll_predicted, (x_min + x_max) / 2, (y_min + y_max) / 2, size = bbox_width)
             utils.draw_axis(frame, yaw_predicted, pitch_predicted, roll_predicted, tdx = (x_min + x_max) / 2, tdy= (y_min + y_max) / 2, size = bbox_height/2)
@@ -194,5 +197,5 @@ if __name__ == '__main__':
     out.release()
     video.release()
     txt_out.close()
-
+    l4_out.close()
 

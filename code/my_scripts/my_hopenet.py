@@ -64,10 +64,12 @@ class Hopenet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
 
-        l4_out = x.view(x.size(0), -1).squeeze().tolist()
+        #l4_out = x.view(x.size(0), -1).squeeze().tolist()
 
         x = self.avgpool(x)
+        print(x.size())
         x = x.view(x.size(0), -1)
+        print(x.size())
         pre_yaw = self.fc_yaw(x)
         pre_pitch = self.fc_pitch(x)
         pre_roll = self.fc_roll(x)
