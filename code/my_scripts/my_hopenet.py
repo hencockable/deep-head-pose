@@ -65,10 +65,6 @@ class Hopenet(nn.Module):
         x = self.layer4(x)
 
         l4_out = x.view(x.size(0), -1).squeeze().tolist()
-        print(l4_out)
-        pca = PCA(n_components=100)
-        l4_out = pca.fit_transform(l4_out)
-        print(l4_out)
 
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
@@ -76,7 +72,7 @@ class Hopenet(nn.Module):
         pre_pitch = self.fc_pitch(x)
         pre_roll = self.fc_roll(x)
 
-        return pre_yaw, pre_pitch, pre_roll
+        return pre_yaw, pre_pitch, pre_roll, l4_out
 
 class ResNet(nn.Module):
     # ResNet for regression of 3 Euler angles.

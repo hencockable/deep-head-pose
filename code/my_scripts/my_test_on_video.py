@@ -88,7 +88,7 @@ if __name__ == '__main__':
 
     txt_out = open(out_dir + '%s_head_poses.csv' % args.output_string, 'w')
     txt_out.write("frame_num,face_id,total_detected_faces,x_min,y_min,x_max,y_max,score,x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,"
-                  "yaw,pitch,roll\n")
+                  "yaw,pitch,roll,l4\n")
     frame_num = 0   # hendrik
 
     # with open(args.bboxes, 'r') as f:
@@ -149,7 +149,7 @@ if __name__ == '__main__':
             img = img.view(1, img_shape[0], img_shape[1], img_shape[2])
             img = Variable(img).cuda(gpu)
 
-            yaw, pitch, roll = model(img)
+            yaw, pitch, roll, l4 = model(img)
 
             yaw_predicted = F.softmax(yaw)
             pitch_predicted = F.softmax(pitch)
@@ -164,7 +164,7 @@ if __name__ == '__main__':
             txt_out.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
                 frame_num, line.face_id, line.total_detected_faces, x_min, y_min, x_max, y_max, line.score,
                 line.x1, line.y1, line.x2, line.y2, line.x3, line.y3, line.x4, line.y4, line.x5, line.y5, yaw_predicted,
-                pitch_predicted, roll_predicted
+                pitch_predicted, roll_predicted, l4
             ))
             # txt_out.write(str(frame_num) + ' %f %f %f %s %s %s %s %s\n' % (yaw_predicted, pitch_predicted, roll_predicted, bbox_in_frame, x_min, y_min, x_max, y_max))
             # utils.plot_pose_cube(frame, yaw_predicted, pitch_predicted, roll_predicted, (x_min + x_max) / 2, (y_min + y_max) / 2, size = bbox_width)
