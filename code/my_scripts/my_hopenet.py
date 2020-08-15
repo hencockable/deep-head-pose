@@ -65,6 +65,7 @@ class Hopenet(nn.Module):
         x = self.layer4(x)
 
         #l4_out = x.view(x.size(0), -1).squeeze().tolist()
+        l4_out = 1
 
         x = self.avgpool(x)
         print(x.size())
