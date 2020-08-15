@@ -150,6 +150,7 @@ if __name__ == '__main__':
             img = Variable(img).cuda(gpu)
 
             yaw, pitch, roll, l4 = model(img)
+            print(l4)
 
             yaw_predicted = F.softmax(yaw)
             pitch_predicted = F.softmax(pitch)
