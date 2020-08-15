@@ -65,6 +65,7 @@ class Hopenet(nn.Module):
         x = self.layer4(x)
 
         l4_out = x.view(x.size(0), -1).tolist()
+        print(l4_out)
         pca = PCA(n_components=100)
         l4_out = pca.fit_transform(l4_out)
         print(l4_out)
