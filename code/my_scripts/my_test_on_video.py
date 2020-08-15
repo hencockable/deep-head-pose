@@ -150,7 +150,7 @@ if __name__ == '__main__':
             img = Variable(img).cuda(gpu)
 
             yaw, pitch, roll, l4 = model(img)
-            print(l4)
+            print(l4[:5])
 
             yaw_predicted = F.softmax(yaw)
             pitch_predicted = F.softmax(pitch)
@@ -165,7 +165,7 @@ if __name__ == '__main__':
             txt_out.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
                 frame_num, line.face_id, line.total_detected_faces, x_min, y_min, x_max, y_max, line.score,
                 line.x1, line.y1, line.x2, line.y2, line.x3, line.y3, line.x4, line.y4, line.x5, line.y5, yaw_predicted,
-                pitch_predicted, roll_predicted, *l4
+                pitch_predicted, roll_predicted, l4
             ))
             # txt_out.write(str(frame_num) + ' %f %f %f %s %s %s %s %s\n' % (yaw_predicted, pitch_predicted, roll_predicted, bbox_in_frame, x_min, y_min, x_max, y_max))
             # utils.plot_pose_cube(frame, yaw_predicted, pitch_predicted, roll_predicted, (x_min + x_max) / 2, (y_min + y_max) / 2, size = bbox_width)
