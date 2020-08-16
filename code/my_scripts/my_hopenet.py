@@ -3,7 +3,6 @@ import torch.nn as nn
 from torch.autograd import Variable
 import math
 import torch.nn.functional as F
-from sklearn.decomposition import PCA
 
 class Hopenet(nn.Module):
     # Hopenet with 3 output layers for yaw, pitch and roll

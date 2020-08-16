@@ -16,6 +16,8 @@ from PIL import Image
 import pandas as pd
 
 import my_hopenet, utils
+from sklearn.decomposition import PCA
+
 
 # Argument parser
 def parse_args():
@@ -183,12 +185,6 @@ if __name__ == '__main__':
             data_df = pd.DataFrame([data], columns=out_df.columns)
             out_df = out_df.append(data_df, ignore_index=True)
 
-            print(out_df.shape)
-            print(len(l4))
-            print(len(l4s))
-
-
-
             # txt_out.write(str(frame_num) + ' %f %f %f %s %s %s %s %s\n' % (yaw_predicted, pitch_predicted, roll_predicted, bbox_in_frame, x_min, y_min, x_max, y_max))
             # utils.plot_pose_cube(frame, yaw_predicted, pitch_predicted, roll_predicted, (x_min + x_max) / 2, (y_min + y_max) / 2, size = bbox_width)
             utils.draw_axis(frame, yaw_predicted, pitch_predicted, roll_predicted, tdx = (x_min + x_max) / 2, tdy= (y_min + y_max) / 2, size = bbox_height/2)
@@ -212,9 +208,15 @@ if __name__ == '__main__':
         idx += 1
         out.write(frame)
         frame_num += 1
+        if frame_num >= 10:
+            break
 
     out.release()
     video.release()
     #txt_out.close()
     #l4_out.close()
 
+    print("Starting PCA reduction to 100 features.")
+    pca = PCA(n_components=100)
+    preds = pca.fit_transform(l4s)
+    print(len(preds), len(preds[0]))
