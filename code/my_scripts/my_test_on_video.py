@@ -221,7 +221,7 @@ if __name__ == '__main__':
     preds = pca.fit_transform(l4s)
     print("PCA finished.")
     print(type(preds))
-    out_df["l4"] = preds
+    out_df["l4"] = list(preds)
 
     print(out_df.shape)
     print(out_df.head(5))
