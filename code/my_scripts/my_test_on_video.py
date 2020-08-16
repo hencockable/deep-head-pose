@@ -219,5 +219,9 @@ if __name__ == '__main__':
     print("Starting PCA reduction to 100 features.")
     pca = PCA(n_components=100)
     preds = pca.fit_transform(l4s)
-    print(len(preds), len(preds[0]))
+    print("PCA finished.")
+
+    out_df["l4"] = preds
+
     print(out_df.shape)
+    print(out_df.head(5))
