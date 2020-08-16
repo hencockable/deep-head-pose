@@ -181,7 +181,7 @@ if __name__ == '__main__':
 
             data = [frame_num, line.face_id, line.total_detected_faces, line.bb_x1, line.bb_y1, line.bb_x2, line.bb_y2,
                     line.score, line.x1, line.y1, line.x2, line.y2, line.x3, line.y3, line.x4, line.y4, line.x5, line.y5,
-                    yaw_predicted, pitch_predicted, roll_predicted]
+                    float(yaw_predicted), float(pitch_predicted), float(roll_predicted)]
             data_df = pd.DataFrame([data], columns=out_df.columns)
             out_df = out_df.append(data_df, ignore_index=True)
 
