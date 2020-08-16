@@ -222,6 +222,7 @@ if __name__ == '__main__':
     print("PCA finished.")
 
     out_df["l4"] = list(preds)
+    print(out_df.shape)
 
     out_df.to_csv("{}{}_l4.csv".format(out_dir, args.output_string), index=False)
     print("Written to file - Exiting.")
