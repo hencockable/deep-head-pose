@@ -223,7 +223,7 @@ if __name__ == '__main__':
     print(type(preds))
     print(preds)
 
-    out_df["l4"] =
+    out_df["l4"] = preds
 
     print(out_df.shape)
     print(out_df.head(5))
