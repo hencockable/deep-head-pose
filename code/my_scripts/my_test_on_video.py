@@ -220,9 +220,10 @@ if __name__ == '__main__':
     pca = PCA(n_components=100)
     preds = pca.fit_transform(l4s)
     print("PCA finished.")
-    print(len(preds), out_df.shape[0])
+    print(type(preds))
+    print(preds)
 
-    out_df["l4"] = [[1, 2]] * 100
+    out_df["l4"] =
 
     print(out_df.shape)
     print(out_df.head(5))
