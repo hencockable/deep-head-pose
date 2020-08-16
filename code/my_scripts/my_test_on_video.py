@@ -86,11 +86,15 @@ if __name__ == '__main__':
     fourcc = cv2.VideoWriter_fourcc(*'MJPG')
     out = cv2.VideoWriter(out_dir + '%s_hopenet.avi' % args.output_string, fourcc, args.fps, (width, height))
 
-    txt_out = open(out_dir + '%s_head_poses.csv' % args.output_string, 'w')
-    txt_out.write("frame_num,face_id,total_detected_faces,x_min,y_min,x_max,y_max,score,x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,"
-                  "yaw,pitch,roll,l4\n")
-    l4_out = open("{}{}_l4_data.csv".format(out_dir, args.output_string), "w")
-    l4_out.write("l4")
+    # txt_out = open(out_dir + '%s_head_poses.csv' % args.output_string, 'w')
+    # txt_out.write("frame_num,face_id,total_detected_faces,x_min,y_min,x_max,y_max,score,x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,"
+    #               "yaw,pitch,roll,l4\n")
+    # l4_out = open("{}{}_l4_data.csv".format(out_dir, args.output_string), "w")
+    # l4_out.write("l4")
+
+    out_df = pd.DataFrame([], columns=["frame_num","face_id","total_detected_faces","x_min","y_min","x_max","y_max",
+                                       "score","x1","y1","x2","y2","x3","y3","x4","y4","x5","y5","yaw","pitch","roll"])
+    l4s = []
 
     frame_num = 0   # hendrik
 
@@ -113,7 +117,7 @@ if __name__ == '__main__':
             if ret == False:
                 out.release()
                 video.release()
-                txt_out.close()
+                #txt_out.close()
                 sys.exit(0)
             out.write(frame)
             frame_num += 1
@@ -164,12 +168,25 @@ if __name__ == '__main__':
             roll_predicted = torch.sum(roll_predicted.data[0] * idx_tensor) * 3 - 99
 
             # Print new frame with cube and axis
-            txt_out.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
-                frame_num, line.face_id, line.total_detected_faces, x_min, y_min, x_max, y_max, line.score,
-                line.x1, line.y1, line.x2, line.y2, line.x3, line.y3, line.x4, line.y4, line.x5, line.y5, yaw_predicted,
-                pitch_predicted, roll_predicted
-            ))
-            l4_out.write("{}\n".format(str(l4)[1:-1]))
+            # txt_out.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
+            #     frame_num, line.face_id, line.total_detected_faces, x_min, y_min, x_max, y_max, line.score,
+            #     line.x1, line.y1, line.x2, line.y2, line.x3, line.y3, line.x4, line.y4, line.x5, line.y5, yaw_predicted,
+            #     pitch_predicted, roll_predicted
+            # ))
+            # l4_out.write("{}\n".format(str(l4)[1:-1]))
+
+            l4s.append(l4)
+
+            data = [frame_num, line.face_id, line.total_detected_faces, line.bb_x1, line.bb_y1, line.bb_x2, line.bb_y2,
+                    line.score, line.x1, line.y1, line.x2, line.y2, line.x3, line.y3, line.x4, line.y4, line.x5, line.y5,
+                    yaw_predicted, pitch_predicted, roll_predicted]
+            data_df = pd.DataFrame([data], columns=out_df.columns)
+            out_df = out_df.append(data_df, ignore_index=True)
+
+            print(out_df.shape)
+
+
+
             # txt_out.write(str(frame_num) + ' %f %f %f %s %s %s %s %s\n' % (yaw_predicted, pitch_predicted, roll_predicted, bbox_in_frame, x_min, y_min, x_max, y_max))
             # utils.plot_pose_cube(frame, yaw_predicted, pitch_predicted, roll_predicted, (x_min + x_max) / 2, (y_min + y_max) / 2, size = bbox_width)
             utils.draw_axis(frame, yaw_predicted, pitch_predicted, roll_predicted, tdx = (x_min + x_max) / 2, tdy= (y_min + y_max) / 2, size = bbox_height/2)
@@ -196,6 +213,6 @@ if __name__ == '__main__':
 
     out.release()
     video.release()
-    txt_out.close()
-    l4_out.close()
+    #txt_out.close()
+    #l4_out.close()
 
