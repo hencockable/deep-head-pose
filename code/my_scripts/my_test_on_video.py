@@ -208,6 +208,8 @@ if __name__ == '__main__':
         idx += 1
         out.write(frame)
         frame_num += 1
+        if frame_num >= 10:
+            break
 
     out.release()
     video.release()
