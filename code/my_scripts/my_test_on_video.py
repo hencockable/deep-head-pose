@@ -220,8 +220,8 @@ if __name__ == '__main__':
     pca = PCA(n_components=100)
     preds = pca.fit_transform(l4s)
     print("PCA finished.")
-    print(type(preds))
+
     out_df["l4"] = list(preds)
 
-    print(out_df.shape)
-    print(out_df.head(5))
+    out_df.to_csv("{}{}_l4.csv".format(out_dir, args.output_string))
+    print("Finished.")
