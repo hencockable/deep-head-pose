@@ -220,3 +220,4 @@ if __name__ == '__main__':
     pca = PCA(n_components=100)
     preds = pca.fit_transform(l4s)
     print(len(preds), len(preds[0]))
+    print(out_df.shape)
