@@ -184,6 +184,8 @@ if __name__ == '__main__':
             out_df = out_df.append(data_df, ignore_index=True)
 
             print(out_df.shape)
+            print(len(l4))
+            print(len(l4s))
 
 
 
