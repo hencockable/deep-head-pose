@@ -208,15 +208,14 @@ if __name__ == '__main__':
         idx += 1
         out.write(frame)
         frame_num += 1
-        if frame_num >= 10:
-            break
+        # if frame_num >= 10:
+        #     break
 
     out.release()
     video.release()
     #txt_out.close()
     #l4_out.close()
 
-    print(len(l4s), len(l4s[0]))
 
     print("Starting PCA reduction to 100 features.")
     pca = PCA(n_components=100)
