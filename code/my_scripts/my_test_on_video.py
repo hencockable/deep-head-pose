@@ -216,6 +216,8 @@ if __name__ == '__main__':
     #txt_out.close()
     #l4_out.close()
 
+    print(len(l4s), len(l4s[0]))
+
     print("Starting PCA reduction to 100 features.")
     pca = PCA(n_components=100)
     trans = pca.fit_transform(l4s)
