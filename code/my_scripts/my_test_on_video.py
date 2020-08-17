@@ -208,6 +208,8 @@ if __name__ == '__main__':
         idx += 1
         out.write(frame)
         frame_num += 1
+        if frame_num >= 10:
+            break
 
     out.release()
     video.release()
@@ -216,10 +218,10 @@ if __name__ == '__main__':
 
     print("Starting PCA reduction to 100 features.")
     pca = PCA(n_components=100)
-    preds = pca.fit_transform(l4s)
+    trans = pca.fit_transform(l4s)
     print("PCA finished.")
 
-    out_df["l4"] = list(preds)
+    out_df["l4"] = list(trans)
 
     out_df.to_csv("{}{}_l4.csv".format(out_dir, args.output_string), index=False)
     print("Written to file - Exiting.")

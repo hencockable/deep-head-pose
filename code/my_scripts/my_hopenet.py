@@ -63,9 +63,10 @@ class Hopenet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
 
+        x = self.avgpool(x)
+
         l4_out = torch.flatten(x).tolist()
 
-        x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         pre_yaw = self.fc_yaw(x)
         pre_pitch = self.fc_pitch(x)
