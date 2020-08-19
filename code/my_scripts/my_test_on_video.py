@@ -187,7 +187,7 @@ if __name__ == '__main__':
 
     out.release()
     video.release()
-    l4_df = pd.DataFrame([l4s])
+    l4_df = pd.DataFrame(l4s)
     l4_df.to_csv("{}{}_l4_no_pca.csv".format(out_dir, args.output_string), index=False)
 
     # print("Starting PCA reduction to 100 features.")
