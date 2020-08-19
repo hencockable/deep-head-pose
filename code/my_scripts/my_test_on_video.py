@@ -1,13 +1,9 @@
-
-# Imports
-import sys, os, argparse
-import numpy as np
+import sys
+import os
+import argparse
 import cv2
-import matplotlib.pyplot as plt
 import torch
-import torch.nn as nn
 from torch.autograd import Variable
-from torch.utils.data import DataLoader
 from torchvision import transforms
 import torch.backends.cudnn as cudnn
 import torchvision
@@ -15,7 +11,8 @@ import torch.nn.functional as F
 from PIL import Image
 import pandas as pd
 
-import my_hopenet, utils
+import my_hopenet
+import utils
 from sklearn.decomposition import PCA
 
 
@@ -88,21 +85,11 @@ if __name__ == '__main__':
     fourcc = cv2.VideoWriter_fourcc(*'MJPG')
     out = cv2.VideoWriter(out_dir + '%s_hopenet.avi' % args.output_string, fourcc, args.fps, (width, height))
 
-    # txt_out = open(out_dir + '%s_head_poses.csv' % args.output_string, 'w')
-    # txt_out.write("frame_num,face_id,total_detected_faces,x_min,y_min,x_max,y_max,score,x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,"
-    #               "yaw,pitch,roll,l4\n")
-    # l4_out = open("{}{}_l4_data.csv".format(out_dir, args.output_string), "w")
-    # l4_out.write("l4")
-
     out_df = pd.DataFrame([], columns=["frame_num","face_id","total_detected_faces","x_min","y_min","x_max","y_max",
                                        "score","x1","y1","x2","y2","x3","y3","x4","y4","x5","y5","yaw","pitch","roll"])
     l4s = []
 
     frame_num = 0
-
-    # with open(args.bboxes, 'r') as f:
-    #     bbox_line_list = f.read().splitlines()
-    #     bbox_line_list = bbox_line_list[1:]     # remove header
 
     bbox_line_df = pd.read_csv(args.bboxes)
 
@@ -119,7 +106,6 @@ if __name__ == '__main__':
             if ret == False:
                 out.release()
                 video.release()
-                #txt_out.close()
                 sys.exit(0)
             out.write(frame)
             frame_num += 1
@@ -136,10 +122,6 @@ if __name__ == '__main__':
 
             bbox_width = abs(x_max - x_min)
             bbox_height = abs(y_max - y_min)
-            # x_min -= 3 * bbox_width / 4
-            # x_max += 3 * bbox_width / 4
-            # y_min -= 3 * bbox_height / 4
-            # y_max += bbox_height / 4
             x_min -= 50
             x_max += 50
             y_min -= 50
@@ -148,6 +130,7 @@ if __name__ == '__main__':
             y_min = max(y_min, 0)
             x_max = min(frame.shape[1], x_max)
             y_max = min(frame.shape[0], y_max)
+
             # Crop face loosely
             img = cv2_frame[y_min:y_max, x_min:x_max]
             img = Image.fromarray(img)
@@ -169,14 +152,6 @@ if __name__ == '__main__':
             pitch_predicted = torch.sum(pitch_predicted.data[0] * idx_tensor) * 3 - 99
             roll_predicted = torch.sum(roll_predicted.data[0] * idx_tensor) * 3 - 99
 
-            # Print new frame with cube and axis
-            # txt_out.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
-            #     frame_num, line.face_id, line.total_detected_faces, x_min, y_min, x_max, y_max, line.score,
-            #     line.x1, line.y1, line.x2, line.y2, line.x3, line.y3, line.x4, line.y4, line.x5, line.y5, yaw_predicted,
-            #     pitch_predicted, roll_predicted
-            # ))
-            # l4_out.write("{}\n".format(str(l4)[1:-1]))
-
             l4s.append(l4)
 
             data = [frame_num, line.face_id, line.total_detected_faces, line.bb_x1, line.bb_y1, line.bb_x2, line.bb_y2,
@@ -185,9 +160,8 @@ if __name__ == '__main__':
             data_df = pd.DataFrame([data], columns=out_df.columns)
             out_df = out_df.append(data_df, ignore_index=True)
 
-            # txt_out.write(str(frame_num) + ' %f %f %f %s %s %s %s %s\n' % (yaw_predicted, pitch_predicted, roll_predicted, bbox_in_frame, x_min, y_min, x_max, y_max))
-            # utils.plot_pose_cube(frame, yaw_predicted, pitch_predicted, roll_predicted, (x_min + x_max) / 2, (y_min + y_max) / 2, size = bbox_width)
             utils.draw_axis(frame, yaw_predicted, pitch_predicted, roll_predicted, tdx = (x_min + x_max) / 2, tdy= (y_min + y_max) / 2, size = bbox_height/2)
+
             # Plot expanded bounding box
             cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0,255,0), 1)
 
@@ -197,7 +171,7 @@ if __name__ == '__main__':
             except Exception:
                 print("Reached end of file.")
                 next_frame_num = -1
-            # print 'next_frame_num ', next_frame_num
+
             if next_frame_num == det_frame_num:
                 idx += 1
                 line = bbox_line_df.iloc[idx]
@@ -208,21 +182,18 @@ if __name__ == '__main__':
         idx += 1
         out.write(frame)
         frame_num += 1
-        # if frame_num >= 10:
-        #     break
 
     out.release()
     video.release()
-    #txt_out.close()
-    #l4_out.close()
+    l4_df = pd.DataFrame([l4s])
+    l4_df.to_csv("{}{}_l4_no_pca.csv".format(out_dir, args.output_string), index=False)
 
-
-    print("Starting PCA reduction to 100 features.")
-    pca = PCA(n_components=100)
-    trans = pca.fit_transform(l4s)
-    print("PCA finished.")
-
-    out_df["l4"] = list(trans)
-
-    out_df.to_csv("{}{}_l4.csv".format(out_dir, args.output_string), index=False)
-    print("Written to file - Exiting.")
+    # print("Starting PCA reduction to 100 features.")
+    # pca = PCA(n_components=100)
+    # trans = pca.fit_transform(l4s)
+    # print("PCA finished.")
+    #
+    # out_df["l4"] = list(trans)
+    #
+    # out_df.to_csv("{}{}_l4.csv".format(out_dir, args.output_string), index=False)
+    # print("Written to file - Exiting.")
