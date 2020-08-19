@@ -52,7 +52,7 @@ def sub_sample(X_train, y_train, sub_sample_size):
     return X_train_sub, y_train_sub
 
 
-PATH_TO_ANNOTATIONS = "/home/hendrik/PycharmProjects/Master/Hopenet/source/annotations_0927_G08_French_cut/perSecond/"
+PATH_TO_ANNOTATIONS = "/Hopenet/source/annotations/annotations_0927_G08_French_cut/perSecond/"
 RUNS = 10  # number of runs of cross val with different data subsets
 TEST_SIZE = 0.2  # percentage of data set to use for testing
 LABELS = [0, 1, 2]

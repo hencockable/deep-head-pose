@@ -98,7 +98,7 @@ if __name__ == '__main__':
                                        "score","x1","y1","x2","y2","x3","y3","x4","y4","x5","y5","yaw","pitch","roll"])
     l4s = []
 
-    frame_num = 0   # hendrik
+    frame_num = 0
 
     # with open(args.bboxes, 'r') as f:
     #     bbox_line_list = f.read().splitlines()
