@@ -23,6 +23,8 @@ for video in videos:
         for _, row in annotation_df.iterrows():
             if row.frame_num in all_data.frame_num.values and row.face_id in all_data.face_id.values:
                 sample = all_data.loc[(all_data.frame_num == row.frame_num) & (all_data.face_id == row.face_id)]
+                sample = sample.drop(columns=["frame_num", "face_id"]).values.tolist()[0]
+
                 # l4 = sample.l4.values[0][1:-1].replace("\n", "").replace("  ", " ").split(" ")
                 # try:
                 #     l4 = list(map(float, l4))
@@ -32,6 +34,7 @@ for video in videos:
 
                 # l4_df = l4_df.append(pd.DataFrame([l4]), ignore_index=True)
                 l4_df = l4_df.append(pd.DataFrame([sample]), ignore_index=True)
+
                 #sample = sample.drop(columns=["l4", "score"]).values.tolist()[0]
                 #data = [video, vp]
                 #data.extend(sample)
@@ -39,6 +42,6 @@ for video in videos:
                 #out_df = out_df.append(pd.DataFrame([data], columns=out_df.columns), ignore_index=True)
 
         #out_df.to_csv("{}data/{}_VP{}_data.csv".format(out_path, video, vp), index=False)
-        l4_df.to_csv("{}l4/{}_VP{}_l4.csv".format(out_path, video, vp), index=False)
+        l4_df.to_csv("{}l4_no_pca/{}_VP{}_l4_no_pca.csv".format(out_path, video, vp), index=False)
         #print(out_df.shape)
         print(l4_df.shape)
