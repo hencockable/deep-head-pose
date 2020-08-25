@@ -28,7 +28,7 @@ def parse_args():
     parser.add_argument('--lr', dest='lr', help='Base learning rate.',
           default=0.001, type=float)
     parser.add_argument('--dataset', dest='dataset', help='Dataset type.', default='Pose_300W_LP', type=str)
-    parser.add_argument('--data_dir', dest='data_dir', help='Directory path for data.',
+    parser.add_argument('--data_dir', dest='data_dir', help='Directory path for meta_data.',
           default='', type=str)
     parser.add_argument('--filename_list', dest='filename_list', help='Path to text file containing relative paths for every example.',
           default='', type=str)
@@ -96,7 +96,7 @@ if __name__ == '__main__':
         saved_state_dict = torch.load(args.snapshot)
         model.load_state_dict(saved_state_dict)
 
-    print('Loading data.')
+    print('Loading meta_data.')
 
     transformations = transforms.Compose([transforms.Scale(240),
     transforms.RandomCrop(224), transforms.ToTensor(),

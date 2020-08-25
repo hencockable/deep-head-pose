@@ -7,7 +7,7 @@ out_path = "../../source/train_val_test_vps/"
 videos = ["0927_G08_French_cut", "0930_G08_IMP_cut"]
 
 for video in videos:
-    all_data = pd.read_csv("/storage/local/wct/data/videos_hendrik/{}_l4_no_pca.csv".format(video))
+    all_data = pd.read_csv("/storage/local/wct/meta_data/videos_hendrik/{}_l4_no_pca.csv".format(video))
 
     annotations = os.listdir(annotations_path.format(video))
 
@@ -36,12 +36,12 @@ for video in videos:
                 l4_df = l4_df.append(pd.DataFrame([sample]), ignore_index=True)
 
                 #sample = sample.drop(columns=["l4", "score"]).values.tolist()[0]
-                #data = [video, vp]
-                #data.extend(sample)
-                #data.append(row.label)
-                #out_df = out_df.append(pd.DataFrame([data], columns=out_df.columns), ignore_index=True)
+                #meta_data = [video, vp]
+                #meta_data.extend(sample)
+                #meta_data.append(row.label)
+                #out_df = out_df.append(pd.DataFrame([meta_data], columns=out_df.columns), ignore_index=True)
 
-        #out_df.to_csv("{}data/{}_VP{}_data.csv".format(out_path, video, vp), index=False)
+        #out_df.to_csv("{}meta_data/{}_VP{}_data.csv".format(out_path, video, vp), index=False)
         l4_df.to_csv("{}l4_no_pca/{}_VP{}_l4_no_pca.csv".format(out_path, video, vp), index=False)
         #print(out_df.shape)
         print(l4_df.shape)

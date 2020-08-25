@@ -53,8 +53,8 @@ def sub_sample(X_train, y_train, sub_sample_size):
 
 
 PATH_TO_ANNOTATIONS = "/Hopenet/source/annotations/annotations_0927_G08_French_cut/perSecond/"
-RUNS = 10  # number of runs of cross val with different data subsets
-TEST_SIZE = 0.2  # percentage of data set to use for testing
+RUNS = 10  # number of runs of cross val with different meta_data subsets
+TEST_SIZE = 0.2  # percentage of meta_data set to use for testing
 LABELS = [0, 1, 2]
 sub_samples_per_label = ["all", 17, 15, 10, 5]
 

@@ -58,8 +58,8 @@ PATH_TO_ANNOTATIONS = "/Hopenet/source/annotations/annotations_0927_G08_French_c
 SAVE_PATH_PLOTS = "../output/plots/{}_joined_l2l3/"
 SAVE_PATH_CLF = "../output/clfs/{}_joined_l2l3/"
 
-RUNS = 10  # number of runs of cross val with different data subsets
-TEST_SIZE = 0.2  # percentage of data set to use for testing
+RUNS = 10  # number of runs of cross val with different meta_data subsets
+TEST_SIZE = 0.2  # percentage of meta_data set to use for testing
 LABELS = [0, 1, 2]
 sub_samples_per_label = ["all", 17, 15, 10, 5]
 

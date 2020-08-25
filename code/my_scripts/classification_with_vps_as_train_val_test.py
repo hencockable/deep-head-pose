@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 data_path = "../../source/train_val_test_sets/"
 save_path_plots = "../output/plots/classification_with_vps_as_train_val_test/"
 
-files = os.listdir(data_path + "data/")
+files = os.listdir(data_path + "meta_data/")
 
 LABELS = [0, 1, 2]
 

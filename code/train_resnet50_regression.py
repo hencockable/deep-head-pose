@@ -27,7 +27,7 @@ def parse_args():
           default=16, type=int)
     parser.add_argument('--lr', dest='lr', help='Base learning rate.',
           default=0.001, type=float)
-    parser.add_argument('--data_dir', dest='data_dir', help='Directory path for data.',
+    parser.add_argument('--data_dir', dest='data_dir', help='Directory path for meta_data.',
           default='', type=str)
     parser.add_argument('--filename_list', dest='filename_list', help='Path to text file containing relative paths for every example.',
           default='', type=str)
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     model = hopenet.ResNet(torchvision.models.resnet.Bottleneck, [3, 4, 6, 3], 3)
     load_filtered_state_dict(model, model_zoo.load_url('https://download.pytorch.org/models/resnet50-19c8e357.pth'))
 
-    print 'Loading data.'
+    print 'Loading meta_data.'
 
     transformations = transforms.Compose([transforms.Scale(240),
     transforms.RandomCrop(224), transforms.ToTensor(),

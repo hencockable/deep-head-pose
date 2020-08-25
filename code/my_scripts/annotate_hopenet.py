@@ -63,11 +63,11 @@ key_dict = {119: 0,
             100: 3,
             32: 4}
 
-video_path = "../../mount/storage/local/wct/data/videos/0925_G12_Chemistry_cut.mkv"
+video_path = "../../mount/storage/local/wct/meta_data/videos/0925_G12_Chemistry_cut.mkv"
 
 video = cv2.VideoCapture(video_path)
 cv2.namedWindow("das", cv2.WINDOW_NORMAL)
-meta = "../../mount/storage/local/wct/data/videos_hendrik/0925_G12_Chemistry_cut_hopenet.txt"
+meta = "../../mount/storage/local/wct/meta_data/videos_hendrik/0925_G12_Chemistry_cut_hopenet.txt"
 frame_num = 0
 
 with open(meta, 'r') as f:

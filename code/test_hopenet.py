@@ -20,7 +20,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Head pose estimation using the Hopenet network.')
     parser.add_argument('--gpu', dest='gpu_id', help='GPU device id to use [0]',
             default=0, type=int)
-    parser.add_argument('--data_dir', dest='data_dir', help='Directory path for data.',
+    parser.add_argument('--data_dir', dest='data_dir', help='Directory path for meta_data.',
           default='', type=str)
     parser.add_argument('--filename_list', dest='filename_list', help='Path to text file containing relative paths for every example.',
           default='', type=str)
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     saved_state_dict = torch.load(snapshot_path)
     model.load_state_dict(saved_state_dict)
 
-    print 'Loading data.'
+    print 'Loading meta_data.'
 
     transformations = transforms.Compose([transforms.Scale(224),
     transforms.CenterCrop(224), transforms.ToTensor(),
