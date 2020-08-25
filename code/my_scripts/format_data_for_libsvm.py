@@ -48,7 +48,11 @@ out_df = pd.DataFrame([], columns=["test", "val", "train"])
 
 files = os.listdir(in_path + "meta_data/")
 
+count = 1
+
 for file in files:
+    print("{} {}/{}".format(file, count, len(files)))
+    count += 1
     test = file
     copy = files.copy()
     copy.remove(test)
@@ -56,7 +60,7 @@ for file in files:
     train = copy[:9]
     val = copy[9:]
 
-    out_df.append(pd.DataFrame([[test[:-4], str([x[:-4] for x in val])[1:-1], str([x[:-4] for x in train])[1:-1]]],
+    out_df = out_df.append(pd.DataFrame([[test[:-4], str([x[:-4] for x in val])[1:-1], str([x[:-4] for x in train])[1:-1]]],
                                columns=out_df.columns))
 
     test_label_df = pd.read_csv("{}labels/{}".format(in_path, test))
